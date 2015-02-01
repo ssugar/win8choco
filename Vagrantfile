@@ -5,6 +5,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 $prereboot = <<SCRIPT
+(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')))>$null 2>&1
 SCRIPT
 
 $postreboot = <<SCRIPT
@@ -29,7 +30,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
    config.vm.synced_folder ".", "/vagrant", type: "smb", disabled: false, smb_host: "10.10.10.66", create: true
 
    #run the pre-reboot script
-   #config.vm.provision "shell", inline: $prereboot
+   config.vm.provision "shell", inline: $prereboot
 
    #reboot
    #config.vm.provision :reload
