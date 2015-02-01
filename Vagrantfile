@@ -6,6 +6,9 @@ VAGRANTFILE_API_VERSION = "2"
 
 $prereboot = <<SCRIPT
 (iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')))>$null 2>&1
+choco install googlechrome
+choco install flashplayerplugin
+choco install javaruntime
 SCRIPT
 
 $postreboot = <<SCRIPT
