@@ -5,13 +5,22 @@
 VAGRANTFILE_API_VERSION = "2"
 
 $prereboot = <<SCRIPT
-(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')))>$null 2>&1
-choco install googlechrome
-choco install flashplayerplugin
-choco install javaruntime
+#(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')))>$null 2>&1
+#choco install googlechrome
+#choco install flashplayerplugin
+#choco install javaruntime
+#choco install office365proplus
+#choco install pswindowsupdate
+import-module PSWindowsUpdate
+Get-WUInstall -AcceptAll
+
 SCRIPT
 
 $postreboot = <<SCRIPT
+$address = "https://gallery.technet.microsoft.com/scriptcenter/2d191bcd-3308-4edd-9de2-88dff796b0bc/file/41459/43/PSWindowsUpdate.zip"
+$destination = "c:\download\PSWindowsUpdate.zip"
+Invoke-WebRequest $address -OutFile $destination
+$destination /s
 SCRIPT
 
 
