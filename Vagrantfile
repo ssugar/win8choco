@@ -5,14 +5,14 @@
 VAGRANTFILE_API_VERSION = "2"
 
 $prereboot = <<SCRIPT
-#(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')))>$null 2>&1
+(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')))>$null 2>&1
 #choco install googlechrome
 #choco install flashplayerplugin
 #choco install javaruntime
 #choco install office365proplus
-#choco install pswindowsupdate
+choco install pswindowsupdate
 import-module PSWindowsUpdate
-#Get-WUInstall -AcceptAll
+Get-WUInstall -AcceptAll
 Get-WURebootStatus
 SCRIPT
 
