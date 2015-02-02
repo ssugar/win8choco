@@ -12,15 +12,13 @@ $prereboot = <<SCRIPT
 #choco install office365proplus
 #choco install pswindowsupdate
 import-module PSWindowsUpdate
-Get-WUInstall -AcceptAll
-
+#Get-WUInstall -AcceptAll
+Get-WURebootStatus
 SCRIPT
 
 $postreboot = <<SCRIPT
-$address = "https://gallery.technet.microsoft.com/scriptcenter/2d191bcd-3308-4edd-9de2-88dff796b0bc/file/41459/43/PSWindowsUpdate.zip"
-$destination = "c:\download\PSWindowsUpdate.zip"
-Invoke-WebRequest $address -OutFile $destination
-$destination /s
+import-module PSWindowsUpdate
+Get-WURebootStatus
 SCRIPT
 
 
@@ -30,6 +28,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
  
    config.vm.box = "mwrock/Windows8.1-amd64"
    config.vm.define :win8choco do |t|
+   end
+
+   config.vm.provider :hyperv do |v|
+	 v.vmname = "win8choco"
+     v.memory = 512
+	 v.cpus = 1
    end
 
    config.vm.communicator = "winrm"
@@ -45,9 +49,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
    config.vm.provision "shell", inline: $prereboot
 
    #reboot
-   #config.vm.provision :reload
+   config.vm.provision :reload
    
    #run the script above
-   #config.vm.provision "shell", inline: $postreboot
+   config.vm.provision "shell", inline: $postreboot
 
 end
