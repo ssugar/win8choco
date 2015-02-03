@@ -13,13 +13,13 @@ $prereboot = <<SCRIPT
 #choco install pswindowsupdate
 import-module PSWindowsUpdate
 Get-WUList | measure | select Count | fl
-Get-WUInstall -AcceptAll
-Get-WURebootStatus
+Get-WUInstall -AcceptAll -IgnoreReboot
+#Get-WURebootStatus -Silent
 SCRIPT
 
 $postreboot = <<SCRIPT
 import-module PSWindowsUpdate
-Get-WURebootStatus
+Get-WURebootStatus -Silent
 SCRIPT
 
 
