@@ -12,6 +12,7 @@ $prereboot = <<SCRIPT
 #choco install office365proplus
 choco install pswindowsupdate
 import-module PSWindowsUpdate
+Add-WuServiceManager 7971f918-a847-4430-9279-4a52d1efe18d -confirm:$false
 Get-WUList | measure | select Count | fl
 Get-WUInstall -AcceptAll -IgnoreReboot
 Get-WURebootStatus -Silent
