@@ -5,16 +5,19 @@
 VAGRANTFILE_API_VERSION = "2"
 
 $prereboot = <<SCRIPT
-(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')))>$null 2>&1
+#(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')))>$null 2>&1
 #choco install googlechrome
 #choco install flashplayerplugin
 #choco install javaruntime
-#choco install office365proplus
-choco install pswindowsupdate
+choco install office365proplus
+#choco install pswindowsupdate
+powercfg -change -standby-timeout-ac 0
+powercfg -change -disk-timeout-ac 0
+powercfg -change -hibernate-timeout-ac 0
 import-module PSWindowsUpdate
 Add-WuServiceManager 7971f918-a847-4430-9279-4a52d1efe18d -confirm:$false
-Get-WUList | measure | select Count | fl
-Get-WUInstall -AcceptAll -IgnoreReboot
+Get-WUList -MicrosoftUpdate | measure | select Count | fl
+Get-WUInstall -AcceptAll -IgnoreReboot -MicrosoftUpdate
 Get-WURebootStatus -Silent
 SCRIPT
 
@@ -51,9 +54,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
    config.vm.provision "shell", inline: $prereboot
 
    #reboot
-   config.vm.provision :reload
+   #config.vm.provision :reload
    
    #run the script above
-   config.vm.provision "shell", inline: $postreboot
+   #config.vm.provision "shell", inline: $postreboot
 
 end
